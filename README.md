@@ -7,8 +7,8 @@ Option 1: Site is hosted on python anywhere:
 
 Option 2: Download and Run Code
 
-  - python3 init_db
-  - flask run //this common will provide a url to access
+  - python3 init_db        // Optional: only run if you want to clear database
+  - flask run              //this common will provide a url to access
   
 
 #### Credentials
