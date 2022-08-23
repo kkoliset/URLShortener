@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>URL Shortener</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    footer {
+      background-color: #3287c1;
+      color: white;
+      padding: 15px;
+    }
+    .navbar {
+      background-color: #3287c1;
+      color: white;
+      outline-color:  #3287c1;
+    }
+    h2 {
+        padding-left: 60px;
+    }
+
+    .container {
+        padding-left: -120px;
+    }
+    a.navbar-brand {
+      color: white !important;
+    }
+
+    a.navbar-right{
+        color: white !important;
+        margin:0;
+        padding:0;
+    }
+
+  
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="nav navbar-brand" href="#">URL Shortener</a>
+      </div>
+       <ul class="nav navbar-nav navbar-right">
+          <li><a class="navbar-right" href="{{ url_for('allURLs')}}"><span class="glyphicon glyphicon-log-in"></span> Show all URLs</a></li>
+        </ul>
+      <div class="collapse navbar-collapse" id="myNavbar">
+      </div>
+
+    </div>
+  </nav>
+
+    <h2>URL Shortener</h2> 
+    <div class="container">
+        <form method="post">
+        
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" name="url" placeholder="Enter URL to Shorten" class="form-control" value="{{ request.form['url'] }}" required autofocus></input>
+            
+            <br>
+            Custom short URL? <br>
+
+            {% if customURLCheck=="YES" or customURLCheck=="NO" %}
+                    {% if customURLCheck == "YES" %}
+                        <label for="Yes">
+                            <input type="radio" id="Yes" name="chk" value = "Yes" checked onclick="ShowHideDiv()" required /> Yes
+                        </label>
+                        <label for="No">
+                            <input type="radio" id="No" name="chk" value="No" onclick="ShowHideDiv()" /> No
+                        </label>
+                        <div id="dvtext" style="display: block">
+                            Custom Short URL
+                            <input type="text" id ="custom_url" name="custom_url" placeholder="Enter Custom Short URL" maxlength="4" class="form-control" value="{{ request.form['custom_url'] }}" required></input>
+                            <br>
+                        </div>
+                    {% endif %}
+                {% if customURLCheck == "NO" %}
+                     <label for="Yes">
+                        <input type="radio" id="Yes" name="chk" value = "Yes" onclick="ShowHideDiv()" required/> Yes
+                    </label>
+                    <label for="No">
+                        <input type="radio" id="No" name="chk" value="No" checked onclick="ShowHideDiv()" checked /> No
+                    </label>
+                    <div id="dvtext" style="display: none">
+                        Custom Short URL
+                        <input type="text" name="custom_url" id ="custom_url" placeholder="Enter Custom Short URL" maxlength="4" class="form-control" value="{{ request.form['custom_url'] }}"></input>
+                        <br>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <label for="Yes">
+                    <input type="radio" id="Yes" name="chk" value = "Yes" onclick="ShowHideDiv()" required/> Yes
+                </label>
+                <label for="No">
+                    <input type="radio" id="No" name="chk" value="No" onclick="ShowHideDiv()" /> No
+                </label>
+                <div id="dvtext" style="display: none">
+                    Custom Short URL
+                    <input type="text" name="custom_url" id ="custom_url" placeholder="Enter Custom Short URL" maxlength="4" class="form-control" value="{{ request.form['custom_url'] }}"></input>
+                    <br>
+                </div>
+            {% endif %}
+            
+            </div>
+
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        <div class="url">
+            {% if short_url %}
+                <hr>
+                <p class="short_url"><strong>Short URL:</strong> {{ short_url }}
+                <br>
+                <br>
+            {% endif %}
+        </div>
+
+
+        <div class="short_url_exist">
+            {% if short_url_exist %}
+                <hr>
+                <p class="short_url_exist"><strong>Short URL Already Exists for URL:</strong> {{ short_url_exist }}
+                <br>
+                <br>
+            {% endif %}
+        </div>
+
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+    </div>
+
+
+
+  
+  <footer class="container-fluid text-center">
+    <p>Dell Interveiw</p>
+  </footer>
+
+
+</body>
+
+</html>
+
+<script> 
+    function ShowHideDiv() {
+        var chkYes = document.getElementById("Yes");
+        var chkNo = document.getElementById("No");
+        var dvtext = document.getElementById("dvtext");
+   
+        if(chkYes.checked){
+            dvtext.style.display = "block";
+            document.getElementById("custom_url").required = true;
+
+
+        }
+        if(chkNo.checked){
+            document.getElementById("custom_url").value = "";
+            document.getElementById("custom_url").required = false;
+            dvtext.style.display = "none";
+            dvtext.required=false;
+        }
+    }
+</script>
